@@ -1,0 +1,159 @@
+# Example settings: copy to config.yaml and edit. Keywords are matched as whole words, case-insensitive.
+
+# On the very first check of a company (nothing remembered yet), only report jobs posted within this window.
+lookback_hours: 24
+# After that, a job is "new" if it wasn't seen on the previous run. Jobs the board says are older
+# than this are ignored even if unseen (e.g. after you change the keywords below).
+max_age_days: 7
+# Forget jobs that have not appeared on a board for this long.
+forget_after_days: 60
+
+us_only: true
+# Extra place names that mean "not in the US" (add any that slip through, e.g. an office or campus name).
+extra_non_us: []
+email_when_empty: false   # set true to get a "no new postings" email every day
+workers: 8                # companies checked in parallel
+
+# Workday boards are searched with these terms (Workday returns max 20 results per page).
+workday_queries: ["software engineer", "data engineer", "machine learning", "backend", "AI engineer", "platform engineer"]
+workday_max_pages: 5
+
+# A title must contain at least one of these...
+require_any: [engineer, engineering, developer, scientist, architect, swe, sde, mle, programmer, technical staff, sre]
+
+# ...and at least one keyword from a track.
+tracks:
+  backend:
+    - backend
+    - back-end
+    - back end
+    - software engineer
+    - software developer
+    - software development engineer
+    - sde
+    - swe
+    - member of technical staff
+    - platform engineer
+    - platform engineering
+    - distributed systems
+    - infrastructure engineer
+    - api
+    - server
+    - full stack
+    - full-stack
+    - fullstack
+    - python
+    - java
+    - site reliability
+    - sre
+  data:
+    - data engineer
+    - data engineering
+    - data platform
+    - data infrastructure
+    - analytics engineer
+    - etl
+    - big data
+    - data pipeline
+    - data pipelines
+    - data warehouse
+    - data architect
+    - dataops
+    - streaming
+    - spark
+    - kafka
+  ai_ml:
+    - machine learning
+    - ml
+    - mle
+    - mlops
+    - ai
+    - artificial intelligence
+    - llm
+    - llms
+    - genai
+    - gen ai
+    - generative ai
+    - deep learning
+    - nlp
+    - applied scientist
+    - research engineer
+    - forward deployed
+    - agents
+    - agentic
+
+# Titles containing any of these are skipped.
+exclude:
+  - intern
+  - internship
+  - co-op
+  - new grad
+  - new graduate
+  - university
+  - campus
+  - apprentice
+  - director
+  - vice president
+  - vp
+  - avp
+  - svp
+  - evp
+  - head of
+  - manager
+  - sales
+  - account executive
+  - recruiter
+  - recruiting
+  - frontend
+  - front-end
+  - front end
+  - ios
+  - android
+  - mobile
+  - embedded
+  - firmware
+  - hardware
+  - asic
+  - fpga
+  - silicon
+  - mechanical
+  - electrical
+  - rf
+  - analog
+  - verification
+  - qa
+  - quality assurance
+  - sdet
+  - test engineer
+  - mainframe
+  - clearance
+  - cleared
+  - ts/sci
+  - top secret
+  - polygraph
+  - principal
+  - distinguished
+  - fellow
+  - senior staff
+
+# --- Digest labels ---------------------------------------------------------------------------------
+# Postings in these places are listed first, under highlight_title. Default: remote postings.
+highlight_locations: [seattle, bellevue, redmond, remote, virtual, anywhere, work from home]
+highlight_title: "Seattle area & remote"     # section heading in the digest
+highlight_summary: "in Seattle or remote"     # email subject: "(5 in Seattle or remote)"
+
+# Optional: label each posting with the resume version to send. The rule whose keyword appears earliest in
+# the title wins; titles no rule matches get default_resume. Leave both out for no labels.
+default_resume: Backend
+resume_rules:
+  - resume: AI Engineer
+    keywords: [ai, artificial intelligence, llm, llms, genai, gen ai, generative ai, agents, agent, agentic,
+               applied ai, forward deployed, research engineer]
+  - resume: ML Engineer
+    keywords: [machine learning, ml, mle, mlops, deep learning, applied scientist, computer vision, nlp]
+  - resume: Data Engineer
+    keywords: [data engineer, data engineering, data platform, data infrastructure, analytics engineer, etl,
+               data pipeline, data pipelines, data warehouse, data warehousing, data architect, dataops,
+               big data, data modeling]
+  - resume: Full-stack
+    keywords: [full stack, full-stack, fullstack]

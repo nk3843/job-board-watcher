@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+.env
+
+# Your own settings and data stay out of this repo
+config.yaml
+companies.yaml
+companies_extra.yaml
+companies_source.csv
+needs_manual_alerts.csv
+discover_report.md
+state/
+output/
+data/

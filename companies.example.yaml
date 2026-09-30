@@ -1,0 +1,15 @@
+# Example company list: copy to companies.yaml and edit, or generate one with `python discover.py`.
+#   ats:   greenhouse | lever | ashby | smartrecruiters | workday | apple | eightfold
+#   board: the company's board name on that system; for workday, the careers URL; for eightfold, the site URL
+#          with ?domain=... (and optionally &location=...); for apple, a location slug
+#   list / priority: optional labels used to order the digest ("High" priority first, then list "Main")
+#   skip: true   stops checking a company without deleting it
+companies:
+  - {name: Airbnb, ats: greenhouse, board: airbnb, list: Main, priority: High}
+  - {name: Wealthfront, ats: lever, board: wealthfront, list: Main}
+  - {name: Abridge, ats: ashby, board: Abridge, list: Main}
+  - {name: ServiceNow, ats: smartrecruiters, board: servicenow, list: Main}
+  - {name: Workday, ats: workday, board: "https://workday.wd5.myworkdayjobs.com/Workday", list: Secondary}
+  - {name: Apple, ats: apple, board: united-states-USA, list: Main}
+  - {name: Microsoft, ats: eightfold, list: Main,
+     board: "https://apply.careers.microsoft.com/?domain=microsoft.com&location=United%20States"}
