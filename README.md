@@ -25,7 +25,7 @@ companies.yaml ──► fetch every board in parallel ──► filter ──�
   version fits each role.
 - **Finds each company's board for you:** [`discover.py`](discover.py) reads careers pages and probes each
   system's API, and lists companies it can't cover so you can set up alerts on their sites instead.
-- **66 tests** run against recorded API responses, no network needed.
+- **70 tests** run against recorded API responses, no network needed.
 
 ## Interesting problems
 
@@ -78,6 +78,73 @@ Everything is in `config.yaml`; [`config.example.yaml`](config.example.yaml) doc
 | `highlight_locations`, `highlight_title`, `highlight_summary` | Which postings are listed first, and how that section is labeled. Default: remote. |
 | `resume_rules`, `default_resume` | Optional label on each posting saying which resume version to send. |
 | `workday_queries`, `workday_max_pages`, `workers` | Search terms for Workday boards, paging limits, parallelism. |
+
+## Customizing: TPM roles in the Seattle area
+
+The example config looks for backend, data, and AI/ML **engineering** roles. Here is what someone looking for
+**Technical Program Manager** roles, with Seattle-area jobs listed first, changes. The finished file is
+[`examples/config.tpm-seattle.yaml`](examples/config.tpm-seattle.yaml); `cp examples/config.tpm-seattle.yaml config.yaml`
+and it works as is ([`tests/test_examples.py`](tests/test_examples.py) checks that it keeps working).
+
+**1. Search for TPM titles on Workday and Eightfold.** These two systems (used by e.g. Microsoft) only return
+jobs matching the search terms, so with the default engineering terms TPM roles are never fetched at all.
+Greenhouse, Lever, Ashby, SmartRecruiters, and Apple return every job and need nothing.
+
+```yaml
+workday_queries: ["technical program manager", "program manager", "tpm"]
+```
+
+**2. Replace the title rules.** A title must contain a `require_any` word *and* match a track.
+
+```yaml
+require_any: [program manager, program management, tpm]
+tracks:
+  TPM:               # shown as-is in the digest and CSV
+    - technical program manager
+    - technical program management
+    - engineering program manager
+    - program manager
+    - tpm
+```
+
+**3. Replace the `exclude` list. Don't just edit it.** Exclusions are checked first, and the engineering list
+drops TPM titles:
+
+| Word in the example config | Drops | For TPMs |
+|---|---|---|
+| `manager` | every "Technical Program Manager" | remove |
+| `principal` | "Principal Program Manager", a common TPM level | remove |
+| `silicon`, `hardware`, `firmware`, `embedded`, `mobile`, … | "Engineering Program Manager, Silicon" | remove |
+
+Instead, exclude internships, executives, and non-technical program roles (plain "program manager" also
+matches customer-success and partnership programs):
+
+```yaml
+exclude: [intern, internship, co-op, new grad, new graduate, university, campus, apprentice,
+          director, vice president, vp, avp, svp, evp, head of,
+          sales, account executive, recruiter, recruiting, marketing,
+          customer success, customer experience, partnerships, partner, channels, events, community]
+```
+
+**4. List Seattle-area jobs first.** Location text is matched as whole words, so name each city:
+
+```yaml
+highlight_locations: [seattle, bellevue, redmond, kirkland, bothell, issaquah, renton, everett, tacoma,
+                      remote, virtual, anywhere, work from home]
+highlight_title: "Seattle area & remote"          # digest section heading
+highlight_summary: "in the Seattle area or remote" # email subject: "(3 in the Seattle area or remote)"
+```
+
+**5. Remove `resume_rules` and `default_resume`** (or write TPM-specific ones), otherwise TPM postings get
+labeled with engineering resume names.
+
+**6. Use your own company list.** Put the companies you want in `companies_source.csv` and run
+`python discover.py`. Companies with their own careers systems (Amazon, Google, Meta, …) can't be read and end up
+in `needs_manual_alerts.csv`; set up alerts on their sites.
+
+Then `python watch.py --dry-run`. With the seven example companies this finds, for example, a *Technical
+Principal Program Manager* in Redmond at the top under "Seattle area & remote". If unwanted titles still show
+up, add a word from them to `exclude`; if a real TPM title is missing, check it against `exclude` first.
 
 ## Tests
 

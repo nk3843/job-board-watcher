@@ -1,0 +1,65 @@
+# Example: Technical Program Manager (TPM) roles, Seattle area first. Copy to config.yaml.
+# See "Customizing: TPM roles in the Seattle area" in README.md for why each setting is what it is.
+
+lookback_hours: 24
+max_age_days: 7
+forget_after_days: 60
+us_only: true
+extra_non_us: []
+email_when_empty: false
+workers: 8
+
+# Workday and Eightfold career sites are searched with these terms, so TPM roles must be named here to be fetched.
+workday_queries: ["technical program manager", "program manager", "tpm"]
+workday_max_pages: 5
+
+# A title must contain one of these...
+require_any: [program manager, program management, tpm]
+
+# ...and match a track. The track name ("TPM") is shown as-is in the digest and CSV.
+tracks:
+  TPM:
+    - technical program manager
+    - technical program management
+    - engineering program manager
+    - program manager
+    - tpm
+
+# Skip internships, executives, and non-technical program roles.
+# Unlike config.example.yaml, "manager", "principal", and hardware words are NOT excluded here.
+exclude:
+  - intern
+  - internship
+  - co-op
+  - new grad
+  - new graduate
+  - university
+  - campus
+  - apprentice
+  - director
+  - vice president
+  - vp
+  - avp
+  - svp
+  - evp
+  - head of
+  - sales
+  - account executive
+  - recruiter
+  - recruiting
+  - marketing
+  - customer success
+  - customer experience
+  - partnerships
+  - partner
+  - channels
+  - events
+  - community
+
+# Seattle-area postings (and remote ones) are listed first.
+highlight_locations: [seattle, bellevue, redmond, kirkland, bothell, issaquah, renton, everett, tacoma,
+                      remote, virtual, anywhere, work from home]
+highlight_title: "Seattle area & remote"
+highlight_summary: "in the Seattle area or remote"
+
+# No resume labels (leave resume_rules and default_resume out).
